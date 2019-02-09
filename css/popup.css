@@ -1,0 +1,35 @@
+
+#word-wrapper {
+
+}
+
+.word-div {
+	padding: 5px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.orig-word {
+	display: inline-block;
+	text-align: left;
+	width: 41%;
+	margin-right: 0px;
+}
+
+.repl-word {
+	display: inline-block;
+	text-align: left;
+	margin-left: 10px;
+	width: 41%;
+}
+
+.remove-word {
+	border: 0px;
+	background-color: transparent;
+	color: rgb(255, 0, 0);
+	cursor: pointer;
+	font-size: 30px;
+	width: 13.5%;
+	text-align: center;
+	display: inline-block;
+}
