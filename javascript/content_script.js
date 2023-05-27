@@ -13,9 +13,9 @@ function get_replace(start_element, word_obj) {
     for (let i = 0; i < all_elements.length; i++) {
         //developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
         //nodeType 3 means text node.
-        if (all_elements[i].nodeType == 1) {
+        if (all_elements[i].nodeType == Node.ELEMENT_NODE) {
             for (let j = 0; j < all_elements[i].childNodes.length; j++) {
-                if (all_elements[i].childNodes[j].nodeType == 3) {
+                if (all_elements[i].childNodes[j].nodeType == Node.TEXT_NODE) {
                     replace_in_element(all_elements[i].childNodes[j], word_obj);
                 }
             }
@@ -37,7 +37,7 @@ function replacer_main() {
 
 
 var lastcheck = 0;
-var mlimit = 2000; //miliseconds
+var mlimit = 500; //miliseconds
 
 document.addEventListener("DOMContentLoaded", function() {
 
