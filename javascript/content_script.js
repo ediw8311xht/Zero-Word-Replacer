@@ -7,10 +7,10 @@ function replace_in_element(th_el, word_obj) {
     }
 }
 
+
 function get_replace(start_element, word_obj) {
     let all_elements = start_element.getElementsByTagName("*");
     for (let i = 0; i < all_elements.length; i++) {
-
         //developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
         //nodeType 3 means text node.
         if (all_elements[i].nodeType == 1) {
@@ -26,17 +26,31 @@ function get_replace(start_element, word_obj) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    setTimeout(function()
-    {
+function replacer_main() {
+    setTimeout(function() {
         let getData = browser.storage.local.get();
-
         getData.then(function(data){
-            console.log(data);
-            console.log('updated');
             get_replace(document.body, data);
         })
-
     }, 100);
+}
+
+
+var lastcheck = 0;
+var mlimit = 2000; //miliseconds
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    replacer_main();
+
+    document.addEventListener("DOMSubtreeModified", function() {
+        let time_between = Math.abs(Date.now() - lastcheck);
+        if ( time_between > mlimit ) {
+            replacer_main();
+            lastcheck = Date.now();
+        }
+    });
 
 });
+
+
