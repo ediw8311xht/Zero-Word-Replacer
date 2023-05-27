@@ -1,0 +1,28 @@
+
+let rmv = document.createElement("button");
+rmv.classList.add("remove-word");
+rmv.innerText = "X";
+rmv.addEventListener("click", function(event) {
+    let removeItem = browser.storage.local.remove(event.target.parentNode.children[0].innerText);
+    removeItem.then(function() {
+        document.getElementById("word-wrapper").removeChild(event.target.parentNode);
+    });
+}, {"once": true});
+
+
+
+let owp = document.createElement("p");
+owp.classList.add("orig-word");
+owp.innerText = orig;
+
+let rwp = document.createElement("p");
+rwp.classList.add("repl-word");
+rwp.innerText = repl;
+
+let div_g = document.createElement("div");
+div_g.classList.add("word-div");
+div_g.appendChild(owp);
+div_g.appendChild(rwp);
+div_g.append(rmv);
+
+document.getElementById("word-wrapper").append(div_g);

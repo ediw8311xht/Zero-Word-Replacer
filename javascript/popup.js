@@ -1,36 +1,30 @@
 
-function remove_word_callback(word) {
-
+function remove_item_callback(event) {
+    let removeItem = browser.storage.local.remove(event.target.parentNode.children[0].innerText);
+    removeItem.then(function() {
+        document.getElementById("word-wrapper").removeChild(event.target.parentNode);
+    });
 }
 
-function append_word_to_list(original_word, replace_with) {
+function append_word_to_list(orig, repl) {
+    let adl = { 'rmv'   : ['button', 'remove-word',  'X'],
+                'owp'   : ['p'     , 'orig-word'  , orig],
+                'rwp'   : ['p'     , 'repl-word'  , repl],
+                'div_g' : ['div'   , 'word-div'   ,   '']   };
 
-    let rmv = document.createElement("button");
-    rmv.classList.add("remove-word");
-    rmv.innerText = "X";
-    rmv.addEventListener("click", function(event) {
-        console.log(event.target.parentNode.children[0].innerText);
-        let removeItem = browser.storage.local.remove(event.target.parentNode.children[0].innerText);
-        removeItem.then(function() {
-            document.getElementById("word-wrapper").removeChild(event.target.parentNode);
-        });
-    }, {"once": true});
+    for (const prp in adl) {
+        let nl = document.createElement(adl[prp][0]);
+        nl.classList.add(adl[prp][1]);
+        nl.innerText = adl[prp][2];
+        adl[prp] = nl;
+    }
 
-    let owp = document.createElement("p");
-    owp.classList.add("orig-word");
-    owp.innerText = original_word;
+    adl['rmv'].addEventListener("click", remove_item_callback, {"once": true});
+    adl['div_g'].appendChild(    adl['owp'] );
+	adl['div_g'].appendChild(    adl['rwp'] );
+    adl['div_g'].append(         adl['rmv'] );
 
-	let rwp = document.createElement("p");
-    rwp.classList.add("repl-word");
-    rwp.innerText = replace_with;
-
-    let div_g = document.createElement("div");
-    div_g.classList.add("word-div");
-    div_g.appendChild(owp);
-	div_g.appendChild(rwp);
-    div_g.append(rmv);
-
-    document.getElementById("word-wrapper").append(div_g);
+    document.getElementById("word-wrapper").append(adl['div_g']);
 }
 
 function empty_fill() {
@@ -51,7 +45,7 @@ function write_full_list(storage_data) {
 
 function click_event_callback() {
 
-	let new_word_el = document.getElementById("new-word");
+	let new_word_el     = document.getElementById("new-word");
 	let replace_word_el = document.getElementById("replace-with");
 
     //Because js does not like {new_word_el.value : value}
